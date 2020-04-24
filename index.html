@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Clinical Trials</title>
+	<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+	<main>
+		<header>
+		<a class="logo" href="/">Clinical Trials Search</a>
+		<form action="/search" method="GET">
+			<input autofocus class="search-input" value="" placeholder="Enter search term" type="search" name="expr">
+		</form>
+		<a href="https:clinicaltrials.gov" class="button clinical-trials-button">Visit ClinicalTrials.gov</a>
+	</header>
+		<section class="container">
+			<div class="result-count">
+	        {{ if (gt .Results.FullStudiesResponse.NStudiesReturned 0)}}
+	          <p>About <strong>{{ .Results.FullStudiesResponse.NStudiesReturned }}</strong> results were found. You are on page <strong>{{ .CurrentPage }}</strong> of <strong> {{ .TotalPages }}</strong>.</p>
+	        {{ else if (ne .SearchKey "") and (eq .Results.FullStudiesResponse.NStudiesReturned 0) }}
+	          <p>No results found for your query: <strong>{{ .SearchKey }}</strong>.</p>
+	        {{ end }}
+	      </div>
+		  <ul class="search-results">
+		    {{ range .Results.FullStudiesResponse.FullStudies }}
+		      <li>
+				{{.Study.ProtocolSection.IdentificationModule.Organization.OrgFullName }}
+		      </li>
+		    {{ end }}
+		  </ul>
+		</section>
+
+	</main>
+</body>
+</html>
